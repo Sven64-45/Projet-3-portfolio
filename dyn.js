@@ -222,3 +222,54 @@ async function refreshPage(i){
     const projet = document.querySelector(`.js-projet-${i}`);
     projet.style.display = "none";
 }
+
+
+// ************ AJOUT MODALE PROJET ************
+
+let modaleProjets = null;
+const openModaleProjets = function(event) {
+    event.preventDefault();
+    console.log("TEST MODALE PROJETS")
+    modaleProjets = document.querySelector(event.target.getAttribute("href"))
+
+    modaleProjets.style.display = null
+    modaleProjets.setAttribute("aria-hidden", "false")
+    modaleProjets.setAttribute("aria-modal", "true")
+    // fermeture modaleProjets
+    modaleProjets.addEventListener("click", closeModaleProjets) 
+    modaleProjets.querySelector(".js-modale-close").addEventListener("click", closeModaleProjets)
+    modaleProjets.querySelector(".js-modale-stop").addEventListener("click", stopPropagation)
+
+    modaleProjets.querySelector(".js-modale-return").addEventListener("click", retourModale)
+
+};
+
+const closeModaleProjets = function(event) {   
+    if (modaleProjets === null) return
+    event.preventDefault();
+
+    modaleProjets.setAttribute("aria-hidden", "true")
+    modaleProjets.removeAttribute("aria-modal")
+
+    modaleProjets.removeEventListener("click", closeModaleProjets)
+
+    modaleProjets.querySelector(".js-modale-close").removeEventListener("click", closeModaleProjets)
+    modaleProjets.querySelector(".js-modale-stop").removeEventListener("click", stopPropagation)
+
+    modaleProjets.style.display = "none"
+    modaleProjets = null
+    closeModale(event)
+};
+
+// fonction retour modale
+const retourModale = function(event) {
+    event.preventDefault();
+    modaleProjets.style.display = "none"
+    modaleProjets = null
+    // modaleProjets(data)
+};
+
+// listner sur le bouton ajouter projet
+document.querySelectorAll(".js-modale-projet").forEach (a => {
+    a.addEventListener("click", openModaleProjets);
+});
