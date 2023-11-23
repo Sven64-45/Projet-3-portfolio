@@ -31,13 +31,17 @@
 		<div class="js-admin-gallery">
 			<!-- gallery projets générée par JS -->
 		</div>
-		<a href="#modaleProjets" class="js-modale-projet">Ajouter un projet</a>
+		<div class="button-wrapper">
+			<div class="button-wrapper-projet">
+				<a href="#modaleProjets" class="js-modale-projet">Ajouter un projet</a>
+			</div>
+		</div>
 	</div>
 </aside>
 
 <!-- modale d'ajout projet -->
 
-<aside class="modaleProjets" id="modaleProjets" aria-hidden="true" style="display: none;">
+<aside id="modaleProjets" class="modaleProjets" aria-hidden="true" style="display: none;">
 	<div class="modale-wrapper js-modale-stop">
 		<div class="logo-modale-container">
 			<a href="#" class="js-modale-return">
@@ -54,24 +58,25 @@
 			<div class="form-group-photo">
 				<i class="fa-regular fa-image"></i>
 				<label for="photo">+ Ajouter une photo</label>
-				<input type="file" name="photo" id="photo" class="js-image">
+				<input type="file" name="image" id="photo" class="js-image">
 			</div>
 
 			<div class="form-group-title">
 				<label for="titre">Titre</label>
-				<input class="js-title" type="text" name="titre" id="titre">
+				<input class="js-title" type="text" name="title" id="titre">
 			</div>
 
 			<div class="form-group-id">
 				<label for="categorie">Catégorie</label>
-				<select name="categorie" id="categorie" class="js-categoryId">
+				<select name="category" id="categorie" class="js-categoryId">
 					<option value="1">Objets</option>
 					<option value="2">Appartements</option>
 					<option value="3">Hôtels & restaurants</option>
 				</select>
 			</div>
-
-			<input type="submit" class="js-add-work" value="Valider">
+			<div class="wrapper-button-ajout">
+				<input type="submit" class="js-add-work" value="Valider">
+			</div>
 		</form>
 	</div>
 </aside>
