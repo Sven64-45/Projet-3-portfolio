@@ -1,4 +1,4 @@
-const api_url = 'http://localhost:5678/api/works';
+const api_url = 'http://localhost:5678/api/works'; //possibilité de rajouter une gestion avec un .env
 
 const btnAll = document.querySelector("#filterTous");
 const btnObjets = document.querySelector("#filterObjets");
@@ -14,25 +14,26 @@ getProjets(data, null);
 
 // purge gallery
 
-function purgeGallery(){
-    gallery.innerHTML="";
+function purgeGallery() {
+    gallery.innerHTML = "";
 }
 
 // génération gallery
 
 async function getProjets(data, id) {
-    const response = await fetch(api_url); 
+    const response = await fetch(api_url);
     data = await response.json();
     purgeGallery();
 
-     // Filtre les résultats
-     if ([1, 2, 3].includes(id)) {
-        data = data.filter(data => data.categoryId == id);}
-    
+    // Filtre les résultats
+    if ([1, 2, 3].includes(id)) {
+        data = data.filter(data => data.categoryId == id);
+    }
+
     if (id === null || [1, 2, 3].includes(id)) {
         for (let i = 0; i < data.length; i++) {
-            
-            const figure = document.createElement("figure"); 
+
+            const figure = document.createElement("figure");
             gallery.appendChild(figure);
             figure.classList.add(`js-projet-${data[i].id}`); // Ajoute l'id du projet pour le lien vers la modale lors de la supression 
             const img = document.createElement("img");
@@ -51,18 +52,24 @@ async function getProjets(data, id) {
 // bouttons filtres
 
 btnAll.addEventListener("click", () => { // Tous les projets
-    getProjets(data, null);})
+    getProjets(data, null);
+})
 
 btnObjets.addEventListener("click", () => { // Objets
-    getProjets(data, 1);})
+    getProjets(data, 1);
+})
 
 btnAPPT.addEventListener("click", () => { // Appartements
-    getProjets(data, 2);})
+    getProjets(data, 2);
+})
 
 btnHotelrestau.addEventListener("click", () => { // Hôtels & restaurants
-    getProjets(data, 3);})
+    getProjets(data, 3);
+})
 
+//************************************************** */
 // ****************** GESTION TOKEN ******************
+//************************************************** */
 
 // Récupération du token
 const token = localStorage.getItem('token');
@@ -76,7 +83,9 @@ async function baradmin() {
     document.querySelectorAll(".edit-admin").forEach(a => {
         if (token == null) {
             return;
-        } else {
+        }
+
+        else {
             a.removeAttribute("aria-hidden");
             a.removeAttribute("style");
             document.getElementById("js-logout").innerHTML = "logout";
@@ -89,7 +98,7 @@ async function baradmin() {
 function logout() {
     // Clear the token from local storage
     localStorage.removeItem('token');
-    
+
     // Redirect to the login page or perform any other desired action
     // For example, you can redirect to the homepage:
     window.location.href = '/login.html';
@@ -98,39 +107,43 @@ function logout() {
 // Call the logout function when the logout button is clicked
 document.getElementById('js-logout').addEventListener('click', logout);
 
+//**************************************************** */
+// ***************** AFFICHAGE MODALE *****************
+//*************************************************** */
 
-// ***************** affichage modale *****************
-
-let modal =null
+let modal = null
 let dataAdmin;
 
 // purge gallery modale
 
-function purgeGalleryModale(){
-    document.querySelector(".js-admin-gallery").innerHTML="";
+function purgeGalleryModale() {
+    document.querySelector(".js-admin-gallery").innerHTML = "";
 };
 
 
-const openModale = function(event) {
+const openModale = function (event) {
     event.preventDefault();
     modal = document.querySelector(event.target.getAttribute("href"))
-    galleryModale (); // affichage gallery de la modale
+    galleryModale(); // affichage gallery de la modale
     modal.style.display = null
     modal.setAttribute("aria-hidden", "false")
     modal.setAttribute("aria-modal", "true")
 
-    document.querySelectorAll(".js-modale-projet").forEach (a => {
+    document.querySelectorAll(".js-modale-projet").forEach(a => {
         a.addEventListener("click", openModaleProjets);
     });
 
-    modal.addEventListener("click", closeModale) 
+    modal.addEventListener("click", closeModale)
     modal.querySelector(".js-modale-close").addEventListener("click", closeModale)
     modal.querySelector(".js-modale-stop").addEventListener("click", stopPropagation)
 }
 
-const closeModale = function(event) {
-    if (modal === null) return
+const closeModale = function (event) {
+    if (modal === null) 
+        return
+
     event.preventDefault();
+
     modal.style.display = "none"
     modal.setAttribute("aria-hidden", "true")
     modal.removeAttribute("aria-modal")
@@ -143,20 +156,23 @@ document.querySelectorAll(".js-modale").forEach(a => {
     a.addEventListener("click", openModale);
 });
 
-const stopPropagation = function(event) {
+const stopPropagation = function (event) {
     event.stopPropagation()
-}  
+}
 
-window.addEventListener("keydown", function(event) {
+window.addEventListener("keydown", function (event) {
     if (event.key === "Escape" || event.key === "Esc") {
         closeModale(event)
+        closeModaleProjets(event)
     }
 });
 
-// ***************** affichage gallery modale *****************
+//************************************************** */
+// ************ affichage gallery modale **********
+//************************************************** */
 
 async function galleryModale() {
-    const response = await fetch(api_url); 
+    const response = await fetch(api_url);
     dataAdmin = await response.json();
     const galleryModale = document.querySelector(".js-admin-gallery");
     purgeGalleryModale();
@@ -185,14 +201,16 @@ async function galleryModale() {
     deleteProjet();
 };
 
+//************************************************** */
 // ************ SUPPRESSION PROJET ************
+//************************************************** */
 
 //listner sur les boutons supprimer
-function deleteProjet () {
-   let boutonsuppr = document.querySelectorAll(".js-modale-projet-suppr");
+function deleteProjet() {
+    let boutonsuppr = document.querySelectorAll(".js-modale-projet-suppr");
     for (let i = 0; i < boutonsuppr.length; i++) {
         boutonsuppr[i].addEventListener("click", deleteImage);
-        };
+    };
 };
 
 async function deleteImage() {
@@ -201,27 +219,27 @@ async function deleteImage() {
     // console.log(token)
     await fetch(`http://localhost:5678/api/works/${this.classList[0]}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}`},
+        headers: { Authorization: `Bearer ${token}` },
     })
-    .then (response => {
-        console.log(response)
-        // Token good
-        if (response.status === 204) {
-            console.log("DEBUG SUPPRESION DU PROJET " + this.classList[0])
-            refreshPage(this.classList[0])
-        }
-        // Token inorrect
-        else if (response.status === 401) {
-            alert("Vous n'êtes pas autorisé à supprimer ce projet, merci de vous connecter avec un compte valide")
-            window.location.href = "login.html";
-        }
-    })
-    .catch (error => {
-        console.log(error)
-    })
+        .then(response => {
+            console.log(response)
+            // Token good
+            if (response.status === 204) {
+                console.log("DEBUG SUPPRESION DU PROJET " + this.classList[0])
+                refreshPage(this.classList[0])
+            }
+            // Token inorrect
+            else if (response.status === 401) {
+                alert("Vous n'êtes pas autorisé à supprimer ce projet, merci de vous connecter avec un compte valide")
+                window.location.href = "login.html";
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
 }
 // Rafraichit les projets sans recharger la page
-async function refreshPage(i){
+async function refreshPage(i) {
     galleryModale(); // Re lance une génération des projets dans la modale admin
 
     // supprime le projet de la page d'accueil
@@ -229,11 +247,12 @@ async function refreshPage(i){
     projet.style.display = "none";
 }
 
-
+//************************************************** */
 // ************ AJOUT MODALE PROJET ************
+//************************************************** */
 
 let modaleProjets = null;
-const openModaleProjets = function(event) {
+const openModaleProjets = function (event) {
     event.preventDefault();
     console.log("TEST MODALE PROJETS")
     modaleProjets = document.querySelector(event.target.getAttribute("href"))
@@ -241,8 +260,14 @@ const openModaleProjets = function(event) {
     modaleProjets.style.display = null
     modaleProjets.setAttribute("aria-hidden", "false")
     modaleProjets.setAttribute("aria-modal", "true")
+
+    //remise à zéro du formulaire
+    document.querySelector(".modale-projet-form").reset();
+    document.querySelector(".form-group-photo").style.display = null;
+    document.querySelector(".js-preview-image").style.display = "none";
+
     // fermeture modaleProjets
-    modaleProjets.addEventListener("click", closeModaleProjets) 
+    modaleProjets.addEventListener("click", closeModaleProjets)
     modaleProjets.querySelector(".js-modale-close").addEventListener("click", closeModaleProjets)
     modaleProjets.querySelector(".js-modale-stop").addEventListener("click", stopPropagation)
 
@@ -250,9 +275,9 @@ const openModaleProjets = function(event) {
 
 };
 
-const closeModaleProjets = function(event) {   
-    if (modaleProjets === null) 
-    return
+const closeModaleProjets = function (event) {
+    if (modaleProjets === null)
+        return
     // event.preventDefault();
 
     modaleProjets.setAttribute("aria-hidden", "true")
@@ -269,14 +294,14 @@ const closeModaleProjets = function(event) {
 };
 
 // fonction retour modale
-const retourModale = function(event) {
+const retourModale = function (event) {
     event.preventDefault();
     modaleProjets.style.display = "none"
     modaleProjets = null
-    modaleProjets(dataAdmin)
+    galleryModale(dataAdmin)
 };
 
-// listner sur le bouton ajouter projet
+// listner sur le bouton ajouter projet // repris dans la foncion modale au début 
 // document.querySelectorAll(".js-modale-projet").forEach (a => {
 //     a.addEventListener("click", openModaleProjets);
 // });
@@ -285,7 +310,11 @@ const retourModale = function(event) {
 const btnAjouterProjet = document.querySelector(".js-add-work");
 btnAjouterProjet.addEventListener("click", addProjet);
 
+//************************************************** */
 // ************ AJOUT PROJET ************
+//************************************************** */
+
+// Test 1 : fonctionne mais ne renvoie pas le bon code erreur
 
 // async function addProjet(event) {
 //     event.preventDefault();
@@ -331,43 +360,73 @@ async function addProjet(event) {
     const categoryId = document.querySelector(".js-categoryId").value;
     const image = document.querySelector(".js-image").files[0];
 
+    
+
     if (title === "" || categoryId === "" || image === undefined) {
         alert("Merci de remplir tous les champs");
         return;
-    } else if (categoryId !== "1" && categoryId !== "2" && categoryId !== "3") {
+    } 
+    
+    else if (categoryId !== "1" && categoryId !== "2" && categoryId !== "3") {
         alert("Merci de choisir une catégorie valide");
         return;
-        } else {
-            try {
-                const formData = new FormData();
-                formData.append("title", title);
-                formData.append("category", categoryId);
-                formData.append("image", image);
+    } 
+    
+    else {
+        try {
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("category", categoryId);
+            formData.append("image", image);
 
-                const response = await fetch("http://localhost:5678/api/works", {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: formData,
-                });
-                console.log(response);
-                console.log(formData);
+            const response = await fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            });
+            console.log(response);
+            console.log(formData);
                 if (response.status === 201) {
                     alert("Projet ajouté avec succès :)");
-                    galleryModale(dataAdmin);
-                    retourModale(event);
-                    getProjets(data, null);
-                    
-                } else if (response.status === 400) {
+                    galleryModale(dataAdmin)
+                    retourModale(event)
+                    getProjets(data, null)
+
+                } 
+                
+                else if (response.status === 400) {
                     alert("Merci de remplir tous les champs");
-                } else if (response.status === 500) {
+                } 
+                
+                else if (response.status === 500) {
                     alert("Erreur serveur");
-                } else if (response.status === 401) {
+                } 
+                
+                else if (response.status === 401) {
                     alert("Vous n'êtes pas autorisé à ajouter un projet");
                     window.location.href = "login.html";
-            }}
+                }
+        }
 
-            catch (error) {
-                console.log(error);
-}}}
+        catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+function previewImage(event) {
+    var input = event.target;
+    var image = document.querySelector(".js-preview-image");
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            image.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+        document.querySelector(".form-group-photo").style.display = "none";
+        document.querySelector(".js-preview-image").style.display = null;
+    }
+   
+}
