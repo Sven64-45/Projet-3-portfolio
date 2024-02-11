@@ -1,8 +1,25 @@
-# Portfolio-architecte-sophie-bluel
+# Portfolio Architecte Sophie Bluel
 
-Code du projet 6 d'intégrateur web.
+Ce projet est un site internet dynamique permettant de présenter le portfolio de l'architecte Sophie Bluel. Le site est développé en JavaScript.
 
-## Information pour le lancer le code
+## Fonctionnalités
 
- - Lancer le backend depuis votre terminal en suivant les instruction du fichier ReadMe.
- - Si vous désirez afficher le code du backend et du frontend, faites le dans 2 instances de VSCode différentes pour éviter tout problème
+- Affichage des projets de l'architecte
+- Galerie d'images pour chaque projet
+- Formulaire de contact pour les visiteurs
+
+## Compétences développées
+
+- Utilisation du Javascript
+- Création et gestion d'une modale
+- Création d'une page de connexion
+
+## Contribuer
+
+Les contributions sont les bienvenues ! Voici comment vous pouvez participer :
+
+1. Fork ce dépôt de code.
+2. Créez une branche pour vos modifications.
+3. Faites vos modifications et commit.
+4. Push vos modifications vers votre fork.
+5. Ouvrez une pull request pour proposer vos modifications.
